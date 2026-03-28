@@ -1,0 +1,49 @@
+metrics:
+  - param_size: 0
+    ttft: 3
+    tpot: 50
+    tps: 0.02
+    toolcall_error_rate: 20
+    structured_output_error_rate: 15
+  
+  - param_size: 10
+    ttft: 3
+    tpot: 40
+    tps: 0.025
+    toolcall_error_rate: 20
+    structured_output_error_rate: 15
+
+  - param_size: 50
+    ttft: 3.5
+    tpot: 30
+    tps: 0.33
+    toolcall_error_rate: 20
+    structured_output_error_rate: 15
+
+  - param_size: 100
+    ttft: 4
+    tpot: 0.04
+    tps: 25
+    toolcall_error_rate: 20
+    structured_output_error_rate: 15
+
+  - param_size: 200
+    ttft: 5
+    tpot: 0.05
+    tps: 20
+    toolcall_error_rate: 20
+    structured_output_error_rate: 15
+
+  - param_size: 500
+    ttft: 6
+    tpot: 0.072
+    tps: 14
+    toolcall_error_rate: 20
+    structured_output_error_rate: 15
+
+  - param_size: 1000
+    ttft: 7
+    tpot: 0.076
+    tps: 13
+    toolcall_error_rate: 20
+    structured_output_error_rate: 15
