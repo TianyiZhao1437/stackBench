@@ -1,49 +1,209 @@
-metrics:
-  - param_size: 0
-    ttft: 3
-    tpot: 50
-    tps: 0.02
-    toolcall_error_rate: 20
-    structured_output_error_rate: 15
-  
-  - param_size: 10
-    ttft: 3
-    tpot: 40
-    tps: 0.025
-    toolcall_error_rate: 20
-    structured_output_error_rate: 15
+anthropic/claude-haiku-4-5:
+  ttft: 2
+  tpot: 0.02
+  tps: 50
+  toolcall_error_rate: 10
+  structured_output_error_rate: 70
 
-  - param_size: 50
-    ttft: 3.5
-    tpot: 30
-    tps: 0.33
-    toolcall_error_rate: 20
-    structured_output_error_rate: 15
+anthropic/claude-opus-4-5:
+  ttft: 4
+  tpot: 0.033
+  tps: 30
+  toolcall_error_rate: 10
+  structured_output_error_rate: 70
 
-  - param_size: 100
-    ttft: 4
-    tpot: 0.04
-    tps: 25
-    toolcall_error_rate: 20
-    structured_output_error_rate: 15
+anthropic/claude-opus-4-5-eco:
+  ttft: 5
+  tpot: 0.05
+  tps: 20
+  toolcall_error_rate: 10
+  structured_output_error_rate: 70
 
-  - param_size: 200
-    ttft: 5
-    tpot: 0.05
-    tps: 20
-    toolcall_error_rate: 20
-    structured_output_error_rate: 15
+anthropic/claude-opus-4-6:
+  ttft: 6
+  tpot: 0.033
+  tps: 30
+  toolcall_error_rate: 10
+  structured_output_error_rate: 70
 
-  - param_size: 500
-    ttft: 6
-    tpot: 0.072
-    tps: 14
-    toolcall_error_rate: 20
-    structured_output_error_rate: 15
+anthropic/claude-sonnet-4-5:
+  ttft: 5
+  tpot: 0.033
+  tps: 30
+  toolcall_error_rate: 10
+  structured_output_error_rate: 70
 
-  - param_size: 1000
-    ttft: 7
-    tpot: 0.076
-    tps: 13
-    toolcall_error_rate: 20
-    structured_output_error_rate: 15
+anthropic/claude-sonnet-4-5-eco:
+  ttft: 5
+  tpot: 0.05
+  tps: 20
+  toolcall_error_rate: 10
+  structured_output_error_rate: 70
+
+anthropic/claude-sonnet-4-6:
+  ttft: 5
+  tpot: 0.04
+  tps: 25
+  toolcall_error_rate: 20
+  structured_output_error_rate: 50
+
+google/gemini-2.5-flash:
+  ttft: 3
+  tpot: 0.02
+  tps: 50
+  toolcall_error_rate: 10
+  structured_output_error_rate: 50
+
+google/gemini-2.5-flash-image:
+  ttft: 15
+  tpot: 0.01
+  tps: 100
+  toolcall_error_rate: null
+  structured_output_error_rate: null
+
+google/gemini-2.5-pro:
+  ttft: 10
+  tpot: 0.017
+  tps: 60
+  toolcall_error_rate: 50
+  structured_output_error_rate: 50
+
+google/gemini-3-flash-preview:
+  ttft: 4
+  tpot: 0.02
+  tps: 50
+  toolcall_error_rate: 10
+  structured_output_error_rate: 20
+
+google/gemini-3-pro-image-preview:
+  ttft: 30
+  tpot: 0.067
+  tps: 15
+  toolcall_error_rate: null
+  structured_output_error_rate: null
+
+google/gemini-3.1-flash-image-preview:
+  ttft: 25
+  tpot: 0.02
+  tps: 50
+  toolcall_error_rate: null
+  structured_output_error_rate: null
+
+google/gemini-3.1-flash-lite-preview:
+  ttft: 3
+  tpot: 0.025
+  tps: 40
+  toolcall_error_rate: 20
+  structured_output_error_rate: 10
+
+google/gemini-3.1-pro-preview:
+  ttft: 10
+  tpot: 0.02
+  tps: 50
+  toolcall_error_rate: 30
+  structured_output_error_rate: 30
+
+minimax/minimax-m2.7:
+  ttft: 4
+  tpot: 0.04
+  tps: 25
+  toolcall_error_rate: 10
+  structured_output_error_rate: null
+
+openai/gpt-4.1:
+  ttft: 3
+  tpot: 0.033
+  tps: 30
+  toolcall_error_rate: 10
+  structured_output_error_rate: 20
+
+openai/gpt-4o-mini:
+  ttft: 4
+  tpot: 0.033
+  tps: 30
+  toolcall_error_rate: 10
+  structured_output_error_rate: 10
+
+openai/gpt-5:
+  ttft: 40
+  tpot: 0.025
+  tps: 40
+  toolcall_error_rate: 10
+  structured_output_error_rate: 60
+
+openai/gpt-5.2:
+  ttft: 8
+  tpot: 0.05
+  tps: 20
+  toolcall_error_rate: 10
+  structured_output_error_rate: 50
+
+openai/gpt-5.3-codex:
+  ttft: 10
+  tpot: 0.04
+  tps: 25
+  toolcall_error_rate: 10
+  structured_output_error_rate: null
+
+openai/gpt-5.4-2026-03-05:
+  ttft: 10
+  tpot: 0.067
+  tps: 15
+  toolcall_error_rate: 10
+  structured_output_error_rate: 50
+
+openai/gpt-5.4-mini-2026-03-17:
+  ttft: 3
+  tpot: 0.04
+  tps: 25
+  toolcall_error_rate: 10
+  structured_output_error_rate: 10
+
+openai/gpt-5.4-nano-2026-03-17:
+  ttft: 3
+  tpot: 0.02
+  tps: 50
+  toolcall_error_rate: 10
+  structured_output_error_rate: 10
+
+openai/gpt-5.4-pro-2026-03-05:
+  ttft: 300
+  tpot: 0.25
+  tps: 4
+  toolcall_error_rate: 10
+  structured_output_error_rate: null
+
+x-ai/grok-4-1-fast-non-reasoning:
+  ttft: 6
+  tpot: 0.02
+  tps: 50
+  toolcall_error_rate: 10
+  structured_output_error_rate: 10
+
+x-ai/grok-4.1-fast-reasoning:
+  ttft: 6
+  tpot: 0.02
+  tps: 50
+  toolcall_error_rate: 10
+  structured_output_error_rate: 10
+
+x-ai/grok-code-fast-1:
+  ttft: 8
+  tpot: 0.01
+  tps: 100
+  toolcall_error_rate: 10
+  structured_output_error_rate: 10
+
+xiaomi/mimo-v2-omni:
+  ttft: 7
+  tpot: 0.033
+  tps: 30
+  toolcall_error_rate: 10
+  structured_output_error_rate: null
+
+xiaomi/mimo-v2-pro:
+  ttft: 10
+  tpot: 0.067
+  tps: 15
+  toolcall_error_rate: 10
+  structured_output_error_rate: null

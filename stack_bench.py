@@ -6,7 +6,29 @@ from huggingface_hub import hf_hub_download
 from typing import Optional
 
 
+DEFAULT_PARAM_CONFIG_PATH = "./param_config.yaml"
 DEFAULT_MODEL_CONFIG_PATH = "./model_config.yaml"
+
+MODEL_NAME_TO_HF = {
+    "deepseek/deepseek-r1-0528": "deepseek-ai/DeepSeek-R1-0528",
+    "deepseek/deepseek-v3.1": "deepseek-ai/DeepSeek-V3.1",
+    "deepseek/deepseek-v3.2": "deepseek-ai/DeepSeek-V3.2",
+    "minimax/minimax-m2": "MiniMaxAI/MiniMax-M2",
+    "minimax/minimax-m2.1": "MiniMaxAI/MiniMax-M2.1",
+    "minimax/minimax-m2.5": "MiniMaxAI/MiniMax-M2.5",
+    "moonshotai/kimi-k2-0905": "moonshotai/Kimi-K2-Instruct-0905",
+    "moonshotai/kimi-k2-thinking": "moonshotai/Kimi-K2-Thinking",
+    "moonshotai/kimi-k2.5": "moonshotai/Kimi-K2.5",
+    "openai/gpt-oss-120b": "openai/gpt-oss-120b",
+    "qwen/qwen3-coder-480b-a35b-instruct": "Qwen/Qwen3-Coder-480B-A35B-Instruct",
+    "qwen/qwen3-vl-235b-a22b-instruct": "Qwen/Qwen3-VL-235B-A22B-Instruct",
+    "qwen/qwen3.5-397b-a17b": "Qwen/Qwen3.5-397B-A17B",
+    "zai-org/glm-4.5-air": "zai-org/GLM-4.5-Air",
+    "zai-org/glm-4.6": "zai-org/GLM-4.6",
+    "zai-org/glm-4.7": "zai-org/GLM-4.6",
+    "zai-org/glm-5": "zai-org/GLM-5",
+    "zai-org/glm-5-turbo": "zai-org/GLM-5-FP8",
+}
 
 
 @dataclass
@@ -217,9 +239,9 @@ def print_model_metrics(model_metrics):
     print(f"structured_output_error_rate: {model_metrics.structured_output_error_rate}%")
 
 
-def load_default_metrics():
+def load_default_param_config():
     default_metrics = []
-    with open(DEFAULT_MODEL_CONFIG_PATH) as file:
+    with open(DEFAULT_PARAM_CONFIG_PATH) as file:
         config_table = yaml.safe_load(file)
         for table in config_table["metrics"]:
             metrics = ModelMetrics(
@@ -234,10 +256,32 @@ def load_default_metrics():
     return default_metrics
 
 
+def load_default_model_config():
+    model_metrics = {}
+    with open(DEFAULT_MODEL_CONFIG_PATH) as file:
+        config_table = yaml.safe_load(file)
+        for model_name in config_table:
+            model = config_table[model_name]
+            metrics = ModelMetrics(
+                model=model_name,
+                param_size=0,
+                ttft=model["ttft"],
+                tpot=model["tpot"],
+                tps=model["tps"],
+                toolcall_error_rate=model["toolcall_error_rate"],
+                structured_output_error_rate=model["structured_output_error_rate"],
+            )
+            model_metrics[model_name] = metrics
+    return model_metrics
+
+
 def get_model_config(model_name):
     config = None
+    hf_model_name = MODEL_NAME_TO_HF.get(model_name, None)
+    if hf_model_name is None:
+        hf_model_name = model_name
     try:
-        config_file = hf_hub_download(repo_id=model_name, filename="config.json")
+        config_file = hf_hub_download(repo_id=hf_model_name, filename="config.json")
         with open(config_file, 'r') as f:
             config = json.load(f)
     except Exception as e:
@@ -248,21 +292,25 @@ def get_model_config(model_name):
 
 def get_model_metrics(model_name):
     """Get model performance metrics from model name"""
-    default_metrics = load_default_metrics()
+    default_param_metrics = load_default_param_config()
+    default_model_metrics = load_default_model_config()
+
     model_config = get_model_config(model_name)
     metrics = None
     param_size = 0
-
     if model_config is None:
-        metrics = default_metrics[-1]
+        if model_name in default_model_metrics:
+            metrics = default_model_metrics[model_name]
+        else:
+            metrics = default_param_metrics[-1]
     else:
         param_size = calculate_model_param_size(model_config)
-        for ref_metrics in default_metrics:
+        for ref_metrics in default_param_metrics:
             if param_size < ref_metrics.param_size:
                 metrics = ref_metrics
                 break
         if metrics is None:
-            metrics = default_metrics[-1]
+            metrics = default_param_metrics[-1]
 
     model_metrics = ModelMetrics(
         model=model_name,
@@ -279,17 +327,55 @@ def get_model_metrics(model_name):
 
 def main():
     model_names = [
-        "deepseek-ai/DeepSeek-V3.2",
-        "moonshotai/Kimi-K2.5",
-        "MiniMaxAI/MiniMax-M2.5",
-        "Qwen/Qwen3.5-397B-A17B",
-        "Qwen/Qwen3.5-4B",
-        "stepfun-ai/Step-3.5-Flash",
-        "XiaomiMiMo/MiMo-V2-Flash",
-        "Anthropic/Claude-Opus-4.6",
+        "anthropic/claude-haiku-4-5",
+        "anthropic/claude-opus-4-5",
+        "anthropic/claude-opus-4-5-eco",
+        "anthropic/claude-opus-4-6",
+        "anthropic/claude-sonnet-4-5",
+        "anthropic/claude-sonnet-4-5-eco",
+        "anthropic/claude-sonnet-4-6",
+        "deepseek/deepseek-r1-0528",
+        "deepseek/deepseek-v3.1",
+        "deepseek/deepseek-v3.2",
+        "google/gemini-2.5-flash",
+        "google/gemini-2.5-flash-image",
+        "google/gemini-2.5-pro",
+        "google/gemini-3-flash-preview",
+        "google/gemini-3-pro-image-preview",
+        "google/gemini-3-pro-preview",
+        "google/gemini-3.1-flash-image-preview",
+        "google/gemini-3.1-flash-lite-preview",
+        "google/gemini-3.1-pro-preview",
+        "minimax/minimax-m2",
+        "minimax/minimax-m2.1",
+        "minimax/minimax-m2.5",
+        "minimax/minimax-m2.7",
+        "moonshotai/kimi-k2-0905",
+        "moonshotai/kimi-k2-thinking",
+        "moonshotai/kimi-k2.5",
+        "openai/gpt-4.1",
+        "openai/gpt-4o-mini",
+        "openai/gpt-5",
+        "openai/gpt-5.2",
+        "openai/gpt-5.3-codex",
+        "openai/gpt-5.4-2026-03-05",
+        "openai/gpt-5.4-mini-2026-03-17",
+        "openai/gpt-5.4-nano-2026-03-17",
+        "openai/gpt-5.4-pro-2026-03-05",
         "openai/gpt-oss-120b",
-        "zai-org/GLM-5",
-        "google/gemini3-flash",
+        "qwen/qwen3-coder-480b-a35b-instruct",
+        "qwen/qwen3-vl-235b-a22b-instruct",
+        "qwen/qwen3.5-397b-a17b",
+        "x-ai/grok-4-1-fast-non-reasoning",
+        "x-ai/grok-4.1-fast-reasoning",
+        "x-ai/grok-code-fast-1",
+        "xiaomi/mimo-v2-omni",
+        "xiaomi/mimo-v2-pro",
+        "zai-org/glm-4.5-air",
+        "zai-org/glm-4.6",
+        "zai-org/glm-4.7",
+        "zai-org/glm-5",
+        "zai-org/glm-5-turbo",
     ]
 
     for model_name in model_names:
